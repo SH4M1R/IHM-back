@@ -39,8 +39,8 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public Empleado autenticarEmpleado(String usuario, String password) {
-        Empleado empleado = empleadoDAO.findByUsername(usuario)
+    public Empleado autenticarEmpleado(String username, String password) {
+        Empleado empleado = empleadoDAO.findByUsername(username)
                 .orElse(null);
         if (empleado == null) {
             return null;

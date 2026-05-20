@@ -5,8 +5,9 @@ import mass_backend.Entidad.Producto;
 
 public interface ProductoService {
     List<Producto> listarProductos();
-    Producto crearProducto(Producto producto);
     Producto obtenerProductoPorId(Integer idProducto);
+    Producto crearProducto(Producto producto);
     Producto actualizarProducto(Producto producto);
     void eliminarProducto(Integer idProducto);
+    List<Producto> listarProductosActivos();
 }
