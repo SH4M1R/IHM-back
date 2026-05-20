@@ -3,15 +3,20 @@ package mass_backend.Entidad;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
 @Entity
-@Table (name = "Empleado")
+@Table(name = "empleado")
+@Data
 public class Empleado {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEmpleado")
-    private Integer idempleado;
+    private Integer idEmpleado;
+
     private String nombre;
+
+    @Column(unique = true, nullable = false)
     private String username;
-    private String contrasena;
+
+    @Column(nullable = false)
+    private String password;
 }

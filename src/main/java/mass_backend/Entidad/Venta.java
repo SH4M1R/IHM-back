@@ -6,20 +6,23 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
-@Data
 @Entity
-@Table(name="Venta")
+@Table(name = "venta")
+@Data
 public class Venta {
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer idventa;
-    private Double ventatotal;
-    private LocalDateTime fecha;
 
-    @OneToMany(mappedBy = "venta")
-    private List<DetalleVenta> detalles;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idVenta;
+
+    private Double total;
+
+    private LocalDateTime fecha;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
+    private List<DetalleVenta> detalles;
 }

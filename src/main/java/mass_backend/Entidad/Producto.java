@@ -3,16 +3,27 @@ package mass_backend.Entidad;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
 @Entity
-@Table(name = "Producto")
+@Table(name = "producto")
+@Data
 public class Producto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")
-    private Integer idproducto;
-    private String producto;
+    private Integer idProducto;
+
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
     private Double precio;
+
     private String imagen;
+
+    private Integer stock;
+
     private String categoria;
+
+    @Column(nullable = false)
+    private Boolean activo = true;
 }

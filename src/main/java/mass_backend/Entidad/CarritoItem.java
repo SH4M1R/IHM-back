@@ -1,25 +1,24 @@
 package mass_backend.Entidad;
 
-import lombok.Data;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
-@Table(name = "detalle_venta")
+@Table(name = "carrito_item")
 @Data
-public class DetalleVenta {
+public class CarritoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDetalle;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_venta")
-    private Venta venta;
+    @JoinColumn(name = "id_carrito")
+    private Carrito carrito;
 
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
     private Integer cantidad;
-    private Double subtotal;
 }
