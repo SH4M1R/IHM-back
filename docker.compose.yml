@@ -1,0 +1,8 @@
+services:
+  mass-backend:
+    build: .
+    container_name: mass-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
