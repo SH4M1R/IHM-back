@@ -1,6 +1,9 @@
 package mass_backend.Entidad;
 
 import lombok.Data;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +17,7 @@ public class DetalleVenta {
 
     @ManyToOne
     @JoinColumn(name = "id_venta")
+    @JsonBackReference
     private Venta venta;
 
     @ManyToOne

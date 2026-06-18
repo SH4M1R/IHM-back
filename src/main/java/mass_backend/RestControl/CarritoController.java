@@ -49,4 +49,28 @@ public class CarritoController {
         }
         return ResponseEntity.ok(actualizado);
     }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<Carrito> obtenerPorUsuario(@PathVariable Integer idUsuario) {
+        Carrito carrito = carritoService.obtenerPorUsuario(idUsuario);
+        if (carrito == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(carrito);
+    }
+
+    @PostMapping("/usuario/{idUsuario}/crear")
+    public ResponseEntity<Carrito> crearCarrito(@PathVariable Integer idUsuario) {
+        Carrito carrito = carritoService.crearCarritoParaUsuario(idUsuario);
+        if (carrito == null) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(carrito);
+    }
+
+    @PutMapping("/{id}/items/{idItem}")
+    public ResponseEntity<Carrito> actualizarCantidad(@PathVariable Integer id, @PathVariable Integer idItem, @RequestBody java.util.Map<String, Integer> body) {
+        Integer nuevaCantidad = body.get("cantidad");
+        Carrito actualizado = carritoService.actualizarCantidadItem(id, idItem, nuevaCantidad); 
+        if (actualizado == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(actualizado);
+    }
 }

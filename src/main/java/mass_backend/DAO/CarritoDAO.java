@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import mass_backend.Entidad.Carrito;
 
 public interface CarritoDAO extends JpaRepository <Carrito, Integer>{
-
+    Carrito findByUsuario_IdUsuario(Integer idUsuario);
 }

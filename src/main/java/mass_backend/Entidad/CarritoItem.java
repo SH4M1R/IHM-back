@@ -1,5 +1,7 @@
 package mass_backend.Entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +16,7 @@ public class CarritoItem {
 
     @ManyToOne
     @JoinColumn(name = "id_carrito")
+    @JsonBackReference
     private Carrito carrito;
 
     @ManyToOne
