@@ -25,7 +25,13 @@ public class Venta {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @ManyToOne
+    @JoinColumn(name = "id_empleado")
+    private Empleado empleado;
+
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<DetalleVenta> detalles;
+
+    private String estado;
 }

@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mass_backend.DAO.VentaDAO;
+import mass_backend.DAO.EmpleadoDAO;
 import mass_backend.DAO.ProductoDAO;
 import mass_backend.DAO.UsuarioDAO;
 import mass_backend.Entidad.Venta;
+import mass_backend.Entidad.Empleado;
 import mass_backend.Entidad.Producto;
 import mass_backend.Entidad.Usuario;
 import mass_backend.Service.VentaService;
@@ -25,6 +27,9 @@ public class VentaServiceImpl implements VentaService {
 
     @Autowired
     private UsuarioDAO usuarioDAO;
+
+    @Autowired
+    private EmpleadoDAO empleadoDAO;
 
     @Override
     public List<Venta> listarVentas() {
@@ -74,5 +79,41 @@ public class VentaServiceImpl implements VentaService {
         
         venta.setTotal(totalVenta);
         return ventaDAO.save(venta);
+    }
+
+    public Venta asignarEmpleado(Integer idVenta, Integer idEmpleado) {
+        java.util.Optional<Venta> optVenta = ventaDAO.findById(idVenta);
+        if (!optVenta.isPresent()) {
+            return null;
+        }
+        Venta venta = optVenta.get();
+        java.util.Optional<Empleado> optEmpleado = empleadoDAO.findById(idEmpleado);
+        if (!optEmpleado.isPresent()) {
+        }
+        Empleado empleado = optEmpleado.get();
+        venta.setEmpleado(empleado); 
+         return ventaDAO.save(venta);
+    }
+
+    @Override
+    public List<Venta> listarVentasPorEmpleado(Integer idEmpleado) {
+        return ventaDAO.findByEmpleadoIdEmpleado(idEmpleado);
+    }
+
+    @Override
+    public Venta actualizarEstado(Integer idVenta, String nuevoEstado) {
+        java.util.Optional<Venta> optVenta = ventaDAO.findById(idVenta);
+        if (!optVenta.isPresent()) {
+            return null;
+        }
+        
+        Venta venta = optVenta.get();
+        venta.setEstado(nuevoEstado);
+        
+        return ventaDAO.save(venta);
+    }
+
+    public List<Venta> listarVentasPorUsuario(Integer idUsuario) {
+        return ventaDAO.findByUsuarioIdUsuario(idUsuario);
     }
 }

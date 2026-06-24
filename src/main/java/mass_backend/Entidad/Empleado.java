@@ -19,4 +19,10 @@ public class Empleado {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String rol;
+
+    @Column(nullable = true)
+    private String delivery;
 }

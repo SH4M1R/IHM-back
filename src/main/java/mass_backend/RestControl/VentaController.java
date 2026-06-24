@@ -98,8 +98,56 @@ public class VentaController {
         writer.flush();
     }
 
+    @PutMapping("/{idVenta}/asignar")
+    public ResponseEntity<Venta> asignarEmpleado(
+            @PathVariable Integer idVenta, 
+            @RequestBody java.util.Map<String, Integer> body) {
+        
+        Integer idEmpleado = body.get("idEmpleado");
+        if (idEmpleado == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        Venta ventaActualizada = ventaService.asignarEmpleado(idVenta, idEmpleado);
+        if (ventaActualizada == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(ventaActualizada);
+    }
+
+    @GetMapping("/empleado/{idEmpleado}")
+    public ResponseEntity<List<Venta>> listarPorEmpleado(@PathVariable Integer idEmpleado) {
+        return ResponseEntity.ok(ventaService.listarVentasPorEmpleado(idEmpleado));
+    }
+
+    @PutMapping("/{idVenta}/estado")
+    public ResponseEntity<Venta> actualizarEstado(
+            @PathVariable Integer idVenta, 
+            @RequestBody java.util.Map<String, String> body) {
+        
+        String nuevoEstado = body.get("estado");
+        if (nuevoEstado == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Venta ventaActualizada = ventaService.actualizarEstado(idVenta, nuevoEstado);
+        if (ventaActualizada == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ventaActualizada);
+    }
+
     private String escaparCSV(String valor) {
         if (valor == null) return "";
         return valor.replace("\"", "\"\"");
     }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Venta>> listarPorUsuario(@PathVariable Integer idUsuario) {
+        return ResponseEntity.ok(ventaService.listarVentasPorUsuario(idUsuario));
+    }
+
+    
 }

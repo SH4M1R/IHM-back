@@ -23,4 +23,7 @@ public class Usuario {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = true)
+    private String direccion;
 }
