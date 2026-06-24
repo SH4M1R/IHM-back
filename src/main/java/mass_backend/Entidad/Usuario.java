@@ -26,4 +26,7 @@ public class Usuario {
 
     @Column(nullable = true)
     private String direccion;
+    
+    @Column(nullable = true)
+    private Long telefono;
 }
