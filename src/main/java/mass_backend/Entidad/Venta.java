@@ -34,4 +34,7 @@ public class Venta {
     private List<DetalleVenta> detalles;
 
     private String estado;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String evidencia;
 }

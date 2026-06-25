@@ -215,6 +215,22 @@ public class VentaController {
         return ResponseEntity.ok(ventaActualizada);
     }
 
+    @PutMapping("/{idVenta}/evidencia")
+    public ResponseEntity<Venta> guardarEvidencia(
+            @PathVariable Integer idVenta,
+            @RequestBody Map<String, String> body) {
+
+        String evidencia = body.get("evidencia");
+        if (evidencia == null || evidencia.isBlank()) return ResponseEntity.badRequest().build();
+
+        Venta venta = ventaService.obtenerPorId(idVenta);
+        if (venta == null) return ResponseEntity.notFound().build();
+
+        venta.setEvidencia(evidencia);
+        ventaService.registrarVenta(venta);
+        return ResponseEntity.ok(venta);
+    }
+
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<Venta>> listarPorUsuario(@PathVariable Integer idUsuario) {
         return ResponseEntity.ok(ventaService.listarVentasPorUsuario(idUsuario));
