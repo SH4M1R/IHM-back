@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 import mass_backend.Entidad.DetalleVenta;
 import mass_backend.Entidad.Venta;
+import mass_backend.Service.MailService;
 import mass_backend.Service.VentaService;
 
 @RestController
@@ -18,6 +19,9 @@ public class VentaController {
 
     @Autowired
     private VentaService ventaService;
+
+    @Autowired
+    private MailService mailService; 
 
     @GetMapping
     public ResponseEntity<List<Venta>> listar() {
@@ -70,7 +74,7 @@ public class VentaController {
     @GetMapping("/exportar/historial-usuario")
     public void exportarHistorialUsuario(HttpServletResponse response) throws Exception {
         response.setContentType("text/csv; charset=UTF-8");
-        response.setHeader("Content-Disposition", "attachment; filename=historial_usuario.csv");
+        response.setHeader("Content-Disposition", "attachment; filename=idUsuario,idVenta,fecha,idProducto,nombreProducto,categoria,precio,cantidad");
 
         List<Venta> ventas = ventaService.listarVentas();
 
@@ -136,6 +140,20 @@ public class VentaController {
             return ResponseEntity.notFound().build();
         }
 
+        if (ventaActualizada.getUsuario() != null) {
+            String emailCliente = ventaActualizada.getUsuario().getCorreo();
+            String nombreCliente = ventaActualizada.getUsuario().getNombre();
+
+            if (emailCliente != null && !emailCliente.isEmpty()) {
+                mailService.sendOrderStatus(
+                    emailCliente, 
+                    nombreCliente != null ? nombreCliente : "Cliente", 
+                    idVenta.longValue(), 
+                    nuevoEstado
+                );
+            }
+        }
+
         return ResponseEntity.ok(ventaActualizada);
     }
 
@@ -148,6 +166,4 @@ public class VentaController {
     public ResponseEntity<List<Venta>> listarPorUsuario(@PathVariable Integer idUsuario) {
         return ResponseEntity.ok(ventaService.listarVentasPorUsuario(idUsuario));
     }
-
-    
 }
