@@ -121,10 +121,10 @@ public class MailService {
         return """
             <div style="font-family:sans-serif;max-width:480px;margin:auto;\
             padding:32px;border:1px solid #e5e7eb;border-radius:16px">
-              <h2 style="color:#065f46;margin-bottom:8px">MassApp</h2>
+              <h2 style="color:#FFDE21;margin-bottom:8px">MassApp</h2>
               <p style="color:#374151">Tu código de verificación es:</p>
               <div style="font-size:40px;font-weight:bold;letter-spacing:12px;\
-            color:#059669;margin:24px 0">%s</div>
+            color:#FFDE21;margin:24px 0">%s</div>
               <p style="color:#6b7280;font-size:14px">Expira en 5 minutos.\
              Si no solicitaste esto, ignora este correo.</p>
             </div>

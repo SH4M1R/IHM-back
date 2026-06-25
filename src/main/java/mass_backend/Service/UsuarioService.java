@@ -10,4 +10,5 @@ List<Usuario> listarUsuarios();
     Usuario actualizarUsuario(Usuario usuario);
     void eliminarUsuario(Integer idUsuario);
     Usuario autenticarUsuario(String usuario, String contrasena);
+    public boolean existePorCorreo(String correo);
 }

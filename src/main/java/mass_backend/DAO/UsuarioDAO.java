@@ -6,4 +6,5 @@ import mass_backend.Entidad.Usuario;
 
 public interface UsuarioDAO extends JpaRepository <Usuario, Integer>{
         Optional<Usuario> findByCorreo(String correo);
+        boolean existsByCorreo(String correo);
 }
