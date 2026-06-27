@@ -114,20 +114,17 @@ public class VentaController {
         return ResponseEntity.ok(nuevaVenta);
     }
 
-    @GetMapping("/exportar/market-basket")
-    public void exportarMarketBasket(HttpServletResponse response) throws Exception {
-        response.setContentType("text/csv; charset=UTF-8");
-        response.setHeader("Content-Disposition", "attachment; filename=market_basket.csv");
-
+    @GetMapping(value = "/exportar/market-basket/raw", produces = "text/csv; charset=UTF-8")
+    public ResponseEntity<String> exportarMarketBasketRaw() {
         List<Venta> ventas = ventaService.listarVentas();
-        PrintWriter writer = response.getWriter();
-        writer.println("idVenta,idProducto,nombreProducto,categoria,precio");
+        StringBuilder sb = new StringBuilder();
+        sb.append("idVenta,idProducto,nombreProducto,categoria,precio\n");
 
         for (Venta venta : ventas) {
             if (venta.getDetalles() == null) continue;
             for (DetalleVenta detalle : venta.getDetalles()) {
                 if (detalle.getProducto() == null) continue;
-                writer.println(String.format("%d,%d,\"%s\",\"%s\",%.2f",
+                sb.append(String.format("%d,%d,\"%s\",\"%s\",%.2f\n",
                     venta.getIdVenta(),
                     detalle.getProducto().getIdProducto(),
                     escaparCSV(detalle.getProducto().getNombre()),
@@ -136,24 +133,20 @@ public class VentaController {
                 ));
             }
         }
-        writer.flush();
+        return ResponseEntity.ok(sb.toString());
     }
 
-    @GetMapping("/exportar/historial-usuario")
-    public void exportarHistorialUsuario(HttpServletResponse response) throws Exception {
-        response.setContentType("text/csv; charset=UTF-8");
-        response.setHeader("Content-Disposition",
-            "attachment; filename=historial_usuario.csv");
-
+    @GetMapping(value = "/exportar/historial-usuario/raw", produces = "text/csv; charset=UTF-8")
+    public ResponseEntity<String> exportarHistorialUsuarioRaw() {
         List<Venta> ventas = ventaService.listarVentas();
-        PrintWriter writer = response.getWriter();
-        writer.println("idUsuario,idVenta,fecha,idProducto,nombreProducto,categoria,precio,cantidad");
+        StringBuilder sb = new StringBuilder();
+        sb.append("idUsuario,idVenta,fecha,idProducto,nombreProducto,categoria,precio,cantidad\n");
 
         for (Venta venta : ventas) {
             if (venta.getUsuario() == null || venta.getDetalles() == null) continue;
             for (DetalleVenta detalle : venta.getDetalles()) {
                 if (detalle.getProducto() == null) continue;
-                writer.println(String.format("%d,%d,%s,%d,\"%s\",\"%s\",%.2f,%d",
+                sb.append(String.format("%d,%d,%s,%d,\"%s\",\"%s\",%.2f,%d\n",
                     venta.getUsuario().getIdUsuario(),
                     venta.getIdVenta(),
                     venta.getFecha().toLocalDate().toString(),
@@ -165,7 +158,7 @@ public class VentaController {
                 ));
             }
         }
-        writer.flush();
+        return ResponseEntity.ok(sb.toString());
     }
 
     @PutMapping("/{idVenta}/asignar")
