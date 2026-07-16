@@ -1,6 +1,7 @@
 package mass_backend.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceRgb;
@@ -9,6 +10,7 @@ import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
@@ -150,6 +152,17 @@ public class MailService {
         tipoCell.add(new Paragraph("Fecha: " + fecha)
             .setFont(regular).setFontSize(9).setFontColor(ColorConstants.WHITE));
 
+        // Código de barras del número de boleta
+        Image barcodeImage = buildBarcodeImage(pdfDoc, numeroBoleta);
+        Div barcodeDiv = new Div()
+            .setBackgroundColor(ColorConstants.WHITE)
+            .setPadding(6)
+            .setWidth(160)
+            .setHorizontalAlignment(HorizontalAlignment.RIGHT)
+            .setMarginTop(8);
+        barcodeDiv.add(barcodeImage);
+        tipoCell.add(barcodeDiv);
+
         header.addCell(logoCell).addCell(tipoCell);
         doc.add(header);
 
@@ -233,6 +246,24 @@ public class MailService {
 
         doc.close();
         return baos.toByteArray();
+    }
+
+    private Image buildBarcodeImage(PdfDocument pdfDoc, String codigo) {
+        Barcode128 barcode128 = new Barcode128(pdfDoc);
+        barcode128.setCodeType(Barcode128.CODE128);
+        barcode128.setCode(codigo);
+        barcode128.setBarHeight(28);
+        barcode128.setX(1f); // ancho de barra
+        // Si prefieres que NO muestre el texto legible debajo de las barras,
+        // descomenta la siguiente línea:
+        // barcode128.setFont(null);
+
+        PdfFormXObject barcodeObj = barcode128.createFormXObject(
+            ColorConstants.BLACK, ColorConstants.WHITE, pdfDoc
+        );
+        Image barcodeImage = new Image(barcodeObj);
+        barcodeImage.setWidth(150);
+        return barcodeImage;
     }
 
     private void addClientRow(Table t, String label, String value,
